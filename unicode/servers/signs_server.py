@@ -26,11 +26,21 @@ async def index_for(request):
     print('!' if semaphore.locked() else '.', end='')
     sys.stdout.flush()
     async with semaphore:
-        word = request.match_info.get('word', '')
-        chars = index.get(word.upper(), [])
-        text = f'{len(chars)} found\n'
-        if chars:
-            text += ' '.join(chars)
+        # import ipdb; ipdb.set_trace()
+        # word = request.match_info.get('word', '')
+        # chars = index.get(word.upper(), [])
+        words = request.match_info.get('word', '').split('-')
+        # text = f'{len(chars)} found\n'
+        text = ''
+        if not words:
+            text = 'not parameters' 
+        else:
+            chars = set(index.get(words[0].upper()))
+            for word in words[1:]:
+                chars = chars.intersection(index.get(word.upper()))
+            text = f'{len(chars)} found\n'
+            if chars:
+                text += ' '.join(chars)
         if global_sleep:
             time.sleep(global_sleep)
         if local_sleep:

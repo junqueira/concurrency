@@ -28,8 +28,8 @@ async def countdown(label, delay):
     tabs = (ord(label) - ord('A')) * '\t'
     n = 3
     while n > 0:
-        await asyncio.sleep(delay)  # <---- <A>
-        # time.sleep(delay)
+        # await asyncio.sleep(delay)  # <---- <A>
+        time.sleep(delay)
         dt = time.perf_counter() - t0
         print('{:7.4f}s \t{}{} = {}'.format(dt, tabs, label, n))
         n -= 1
